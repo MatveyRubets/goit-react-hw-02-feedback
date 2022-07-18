@@ -1,0 +1,16 @@
+.btnContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.btn {
+  width: 200px;
+  padding: 25px;
+}
+.dropDown {
+  background: teal;
+  text-align: center;
+  width: 200px;
+  padding: 25px;
+}
