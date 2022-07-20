@@ -1,8 +1,10 @@
-import { render } from '@testing-library/react';
 import React, { Component } from 'react';
-import Counter from './Counter/Counter';
-import DropDown from './DropDown/DropDown';
-import ToDoList from './ToDoList/ToDoList';
+import Section from './Section/Section';
+import Feedback from './Feedback/Feedback';
+import Statistics from './Statistics/Statistics';
+// import Counter from './Counter/Counter';
+// import DropDown from './DropDown/DropDown';
+// import ToDoList from './ToDoList/ToDoList';
 
 // const colorPickerOptions = [
 //   { label: 'red', color: '#F44336' },
@@ -15,44 +17,54 @@ import ToDoList from './ToDoList/ToDoList';
 
 class App extends Component {
   state = {
-    todos: [
-      { id: '1', text: 'Walk dog', fini: true },
-      { id: '2', text: 'Eat', fini: false },
-      { id: '3', text: 'Piss', fini: false },
-    ],
+    good: 0,
+    neutral: 0,
+    bad: 0,
   };
 
-  deleteTodo = todoId => {
+  increment = rate => {
     this.setState(prevState => ({
-      todos: prevState.todos.filter(todo => todo.id !== todoId),
+      [rate]: prevState[rate] + 1,
     }));
   };
 
+  countTotalFeedback = () => {
+    return this.state.good + this.state.neutral + this.state.bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    if (this.countTotalFeedback()) {
+      return (this.state.good / this.countTotalFeedback()) * 100;
+    }
+  };
+
   render() {
-    const { todos } = this.state;
-
-    const completedTodos = todos.reduce(
-      (total, todo) => (todo.fini ? total + 1 : total),
-      0
-    );
-
-    const totalTodos = todos.length;
-
+    const { good, neutral, bad } = this.state;
+    const sum = this.countTotalFeedback();
+    const ratio = this.countPositiveFeedbackPercentage();
     return (
-      <>
-        {/* <Counter />f */}
+      <div>
+        <Section title="Please leave a feedback">
+          <Feedback
+            options={Object.keys(this.state)}
+            handleIncrement={this.increment}
+          />
+        </Section>
 
-        {/* <DropDown /> */}
-
-        {/* <ColorPicker options={colorPickferOptions} /> */}
-
-        <div>
-          <p>Total: {totalTodos}</p>
-          <p>Done: {completedTodos}</p>
-        </div>
-
-        <ToDoList todos={todos} removeTodo={this.deleteTodo} />
-      </>
+        <Section title="Statistics">
+          {sum ? (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={sum}
+              positiveFeedback={ratio}
+            />
+          ) : (
+            <p>No feedback given</p>
+          )}
+        </Section>
+      </div>
     );
   }
 }
