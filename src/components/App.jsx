@@ -2,18 +2,6 @@ import React, { Component } from 'react';
 import Section from './Section/Section';
 import Feedback from './Feedback/Feedback';
 import Statistics from './Statistics/Statistics';
-// import Counter from './Counter/Counter';
-// import DropDown from './DropDown/DropDown';
-// import ToDoList from './ToDoList/ToDoList';
-
-// const colorPickerOptions = [
-//   { label: 'red', color: '#F44336' },
-//   { label: 'green', color: '#4CAF50' },
-//   { label: 'blue', color: '#2196F3' },
-//   { label: 'grey', color: '#606D8B' },
-//   { label: 'pink', color: '#E91E63' },
-//   { label: 'indigo', color: '#3F51B5' },
-// ];
 
 class App extends Component {
   state = {
@@ -22,9 +10,9 @@ class App extends Component {
     bad: 0,
   };
 
-  increment = rate => {
-    this.setState(prevState => ({
-      [rate]: prevState[rate] + 1,
+  countFeedback = rating => {
+    this.setState(prevRating => ({
+      [rating]: prevRating[rating] + 1,
     }));
   };
 
@@ -40,25 +28,25 @@ class App extends Component {
 
   render() {
     const { good, neutral, bad } = this.state;
-    const sum = this.countTotalFeedback();
-    const ratio = this.countPositiveFeedbackPercentage();
+    const totalFeedback = this.countTotalFeedback();
+    const positiveFeedback = this.countPositiveFeedbackPercentage();
     return (
       <div>
         <Section title="Please leave a feedback">
           <Feedback
             options={Object.keys(this.state)}
-            handleIncrement={this.increment}
+            onLeaveFeedback={this.countFeedback}
           />
         </Section>
 
         <Section title="Statistics">
-          {sum ? (
+          {totalFeedback ? (
             <Statistics
               good={good}
               neutral={neutral}
               bad={bad}
-              total={sum}
-              positiveFeedback={ratio}
+              total={totalFeedback}
+              positiveFeedback={positiveFeedback}
             />
           ) : (
             <p>No feedback given</p>

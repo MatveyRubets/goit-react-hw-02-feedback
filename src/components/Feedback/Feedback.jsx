@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
-const Feedback = ({ options, handleIncrement }) => {
+const Feedback = ({ options, onLeaveFeedback }) => {
   return (
     <>
-      {options.map(rate => {
+      {options.map(rating => {
         return (
-          <button key={rate} onClick={() => handleIncrement(rate)}>
-            {rate}
+          <button key={rating} onClick={() => onLeaveFeedback(rating)}>
+            {rating}
           </button>
         );
       })}
@@ -16,7 +16,7 @@ const Feedback = ({ options, handleIncrement }) => {
 
 Feedback.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  handleIncrement: PropTypes.func.isRequired,
+  onLeaveFeedback: PropTypes.func.isRequired,
 };
 
 export default Feedback;
