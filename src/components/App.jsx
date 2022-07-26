@@ -35,7 +35,7 @@ class App extends Component {
         <Section title="Please leave a feedback">
           <Feedback
             options={Object.keys(this.state)}
-            onLeaveFeedback={this.countFeedback}
+            onCountFeedback={this.countFeedback}
           />
         </Section>
 
